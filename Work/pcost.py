@@ -3,6 +3,7 @@
 # Exercise 1.27
 #
 # Write a program to calculate the total cost of the holdings in portfolio.csv
+import sys
 import csv
 
 
@@ -22,5 +23,10 @@ def portfolio_cost(filename):
     return total
 
 
-cost = portfolio_cost("Data/portfolio.csv")
-print(f"Total cost: ${cost:,.2f}")
+if len(sys.argv) == 2:
+    filename = sys.argv[1]
+else:
+    filename = "Data/portfolio.csv"
+
+cost = portfolio_cost(filename)
+print(f"Total cost of portfolio in '{filename}': ${cost:,.2f}")
