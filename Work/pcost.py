@@ -10,11 +10,14 @@ def portfolio_cost(filename):
     total = 0
     with open(filename, "rt") as f:
         header = next(f)
-        for line in f:
-            row = line.split(",")
-            nshares = int(row[1])
-            price = float(row[2])
-            total += nshares * price
+        for line_no, line in enumerate(f, 2):
+            try:
+                row = line.split(",")
+                nshares = int(row[1])
+                price = float(row[2])
+                total += nshares * price
+            except Exception as e:
+                print(f"Error processing row[{line_no}]. {e}")
     return total
 
 
