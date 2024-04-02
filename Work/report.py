@@ -16,7 +16,7 @@ def read_portfolio_tuple(filename):
     return portfolio
 
 
-def read_portfolio_dict(filename):
+def read_portfolio(filename):
     """A function that returns a list of dictionaries of the holdings in a portfolio"""
     portfolio = []
     with open(filename, "rt") as f:
@@ -40,6 +40,22 @@ def read_prices(filename):
             if row:
                 prices[row[0]] = float(row[1])
     return prices
+
+
+def make_report(portfolio, prices):
+    """Returns a list of tuples where each tuple is a summary of the
+    performance of the stock."""
+    report = []
+    for stock in portfolio:
+        name = stock["name"]
+        if name in prices:
+            price = prices[name]
+            price_delta = f"{price - stock["price"]:.2f}"
+        else:
+            price = None
+            price_delta = None
+        report.append((name, stock["shares"], price, price_delta))
+    return report
 
 
 def compute_portfolio_cost(portfolio):
@@ -83,9 +99,10 @@ def compute_holding_pnl(portfolio, prices):
     return pnl
 
 
-portfolio = read_portfolio_dict("Data/portfolio.csv")
+portfolio = read_portfolio("Data/portfolio.csv")
 prices = read_prices("Data/prices.csv")
+report = make_report(portfolio, prices)
 
-print(f"Portfolio Cost: ${compute_portfolio_cost(portfolio):,.2f}")
-print(f"Portfolio Value: ${compute_portfolio_value(portfolio, prices):,.2f}")
-print(f"Portfolio PNL: ${compute_portfolio_pnl(portfolio, prices):,.2f}")
+# print(f"Portfolio Cost: ${compute_portfolio_cost(portfolio):,.2f}")
+# print(f"Portfolio Value: ${compute_portfolio_value(portfolio, prices):,.2f}")
+# print(f"Portfolio PNL: ${compute_portfolio_pnl(portfolio, prices):,.2f}")
