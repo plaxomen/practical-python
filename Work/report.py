@@ -50,12 +50,18 @@ def make_report(portfolio, prices):
         name = stock["name"]
         if name in prices:
             price = prices[name]
-            price_delta = f"{price - stock["price"]:.2f}"
+            price_delta = price - stock["price"]
         else:
-            price = None
-            price_delta = None
+            price = 0.0
+            price_delta = 0.0
         report.append((name, stock["shares"], price, price_delta))
     return report
+
+
+def format_report(report):
+    """Prints a formatted table of the stockes in report."""
+    for name, shares, price, change in report:
+        print(f"{name:>10s} | {shares:>10d} | {price:>10.2f} | {change:>10.2f}")
 
 
 def compute_portfolio_cost(portfolio):
