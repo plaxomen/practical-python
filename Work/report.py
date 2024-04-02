@@ -60,6 +60,9 @@ def make_report(portfolio, prices):
 
 def format_report(report):
     """Prints a formatted table of the stockes in report."""
+    headers = ("Name", "Shares", "Price", "Change")
+    print("%10s | %10s | %10s | %10s" % headers)
+    print(f"{'':->10s} | {'':->10s} | {'':->10s} | {'':->10s}")
     for name, shares, price, change in report:
         print(f"{name:>10s} | {shares:>10d} | {price:>10.2f} | {change:>10.2f}")
 
