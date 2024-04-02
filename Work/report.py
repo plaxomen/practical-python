@@ -64,7 +64,8 @@ def format_report(report):
     print("%10s | %10s | %10s | %10s" % headers)
     print(f"{'':->10s} | {'':->10s} | {'':->10s} | {'':->10s}")
     for name, shares, price, change in report:
-        print(f"{name:>10s} | {shares:>10d} | {price:>10.2f} | {change:>10.2f}")
+        price = f"${price:.2f}"
+        print(f"{name:>10s} | {shares:>10d} | {price:>10s} | {change:>10.2f}")
 
 
 def compute_portfolio_cost(portfolio):
@@ -111,6 +112,7 @@ def compute_holding_pnl(portfolio, prices):
 portfolio = read_portfolio("Data/portfolio.csv")
 prices = read_prices("Data/prices.csv")
 report = make_report(portfolio, prices)
+format_report(report)
 
 # print(f"Portfolio Cost: ${compute_portfolio_cost(portfolio):,.2f}")
 # print(f"Portfolio Value: ${compute_portfolio_value(portfolio, prices):,.2f}")
