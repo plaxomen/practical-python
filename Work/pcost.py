@@ -18,8 +18,8 @@ def portfolio_cost(filename):
                 nshares = int(row[1])
                 price = float(row[2])
                 total += nshares * price
-            except Exception as e:
-                print(f"Error processing row[{row_no}]. {e}")
+            except ValueError as e:
+                print(f"Error processing row[{row_no}]. Bad or missing data: {row}")
     return total
 
 
