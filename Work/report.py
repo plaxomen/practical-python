@@ -20,12 +20,16 @@ def read_portfolio(filename):
     """A function that returns a list of dictionaries of the holdings in a portfolio"""
     portfolio = []
     with open(filename, "rt") as f:
-        data = csv.reader(f)
-        header = next(data)
-        for row in data:
-            portfolio.append(
-                {"name": row[0], "shares": int(row[1]), "price": float(row[2])}
-            )
+        rows = csv.reader(f)
+        header = next(rows)
+        for rownum, row in enumerate(rows, 2):
+            try:
+                record = dict(zip(header, row))
+                portfolio.append(record)
+            except ValueError as err:
+                print(
+                    f"Error processing row {rownum}. Missing or bad data: {row} > Message: {err}"
+                )
     return portfolio
 
 
@@ -35,7 +39,6 @@ def read_prices(filename):
     prices = {}
     with open(filename, "rt") as f:
         rows = csv.reader(f)
-        header = next(rows)
         for row in rows:
             if row:
                 prices[row[0]] = float(row[1])
@@ -50,7 +53,7 @@ def make_report(portfolio, prices):
         name = stock["name"]
         if name in prices:
             price = prices[name]
-            price_delta = price - stock["price"]
+            price_delta = price - float(stock["price"])
         else:
             price = 0.0
             price_delta = 0.0
@@ -65,7 +68,7 @@ def format_report(report):
     print(f"{'':->10s} | {'':->10s} | {'':->10s} | {'':->10s}")
     for name, shares, price, change in report:
         price = f"${price:.2f}"
-        print(f"{name:>10s} | {shares:>10d} | {price:>10s} | {change:>10.2f}")
+        print(f"{name:>10s} | {int(shares):>10d} | {price:>10s} | {change:>10.2f}")
 
 
 def compute_portfolio_cost(portfolio):
@@ -109,7 +112,7 @@ def compute_holding_pnl(portfolio, prices):
     return pnl
 
 
-portfolio = read_portfolio("Data/portfolio.csv")
+portfolio = read_portfolio("Data/portfoliodate.csv")
 prices = read_prices("Data/prices.csv")
 report = make_report(portfolio, prices)
 format_report(report)

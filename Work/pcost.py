@@ -14,12 +14,15 @@ def portfolio_cost(filename):
         rows = csv.reader(f)
         header = next(rows)
         for row_no, row in enumerate(rows, 2):
+            record = dict(zip(header, row))
             try:
-                nshares = int(row[1])
-                price = float(row[2])
+                nshares = int(record["shares"])
+                price = float(record["price"])
                 total += nshares * price
-            except ValueError as e:
-                print(f"Error processing row[{row_no}]. Bad or missing data: {row}")
+            except ValueError as err:
+                print(
+                    f"Error processing row[{row_no}]. Bad or missing data: {row} > Message: {err}"
+                )
     return total
 
 
