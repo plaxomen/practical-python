@@ -4,11 +4,13 @@
 import csv
 
 
-def parse_csv(filename: str, select=None, types=None, has_headers=True) -> dict:
+def parse_csv(
+    filename: str, select=None, types=None, has_headers=True, delimiter=","
+) -> dict:
     """A function that takes a csv filename as input and returns a
     list of dictionaries representing each row of data."""
     with open(filename, "rt") as f:
-        rows = csv.reader(f)
+        rows = csv.reader(f, delimiter=delimiter)
 
         # If file has headers then handle for headers and possible select columns.
         if has_headers:
