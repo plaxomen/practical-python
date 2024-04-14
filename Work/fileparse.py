@@ -4,21 +4,23 @@
 import csv
 
 
-def parse_csv(filename: str, select=None, types=None) -> dict:
+def parse_csv(filename: str, select=None, types=None, has_headers=True) -> dict:
     """A function that takes a csv filename as input and returns a
     list of dictionaries representing each row of data."""
     with open(filename, "rt") as f:
         rows = csv.reader(f)
 
-        # Read file headers.
-        header = next(rows)
+        # If file has headers then handle for headers and possible select columns.
+        if has_headers:
+            # Read file headers.
+            header = next(rows)
 
-        # If select columns provided, find the indices of the columns names from existing headers.
-        if select:
-            indices = [header.index(colname) for colname in select]
-            header = select
-        else:
-            indices = []
+            # If select columns provided, find the indices of the columns names from existing headers.
+            if select:
+                indices = [header.index(colname) for colname in select]
+                header = select
+            else:
+                indices = []
 
         records = []
         for row in rows:
@@ -26,14 +28,17 @@ def parse_csv(filename: str, select=None, types=None) -> dict:
                 continue
 
             # Filter the row if specific columns were selected
-            if indices:
+            if has_headers and indices:
                 row = [row[index] for index in indices]
 
             # Apply type conversions of specific types were provided
             if types:
                 row = [func(value) for func, value in zip(types, row)]
 
-            # Build Dictionary
-            record = dict(zip(header, row))
+            # Build dictionay if headers supplied or tuples if missing headers
+            if has_headers:
+                record = dict(zip(header, row))
+            else:
+                record = tuple(row)
             records.append(record)
     return records
