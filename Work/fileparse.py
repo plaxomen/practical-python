@@ -9,6 +9,11 @@ def parse_csv(
 ) -> dict:
     """A function that takes a csv filename as input and returns a
     list of dictionaries representing each row of data."""
+    if select and not has_headers:
+        raise RuntimeError(
+            f"'select' column headers provided ({select}) for file containing no headers."
+        )
+
     with open(filename, "rt") as f:
         rows = csv.reader(f, delimiter=delimiter)
 
