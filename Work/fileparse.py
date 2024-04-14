@@ -30,22 +30,26 @@ def parse_csv(
                 indices = []
 
         records = []
-        for row in rows:
-            if not row:  # Skip empty rows.
-                continue
+        for rowno, row in enumerate(rows, start=1):
+            try:
+                if not row:  # Skip empty rows.
+                    continue
 
-            # Filter the row if specific columns were selected
-            if has_headers and indices:
-                row = [row[index] for index in indices]
+                # Filter the row if specific columns were selected
+                if has_headers and indices:
+                    row = [row[index] for index in indices]
 
-            # Apply type conversions of specific types were provided
-            if types:
-                row = [func(value) for func, value in zip(types, row)]
+                # Apply type conversions of specific types were provided
+                if types:
+                    row = [func(value) for func, value in zip(types, row)]
 
-            # Build dictionay if headers supplied or tuples if missing headers
-            if has_headers:
-                record = dict(zip(header, row))
-            else:
-                record = tuple(row)
-            records.append(record)
+                # Build dictionay if headers supplied or tuples if missing headers
+                if has_headers:
+                    record = dict(zip(header, row))
+                else:
+                    record = tuple(row)
+                records.append(record)
+            except ValueError as e:
+                print(f"Error processing row {rowno}: {row}")
+                print(f"\tError Message: {e}")
     return records
