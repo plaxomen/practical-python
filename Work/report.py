@@ -5,18 +5,7 @@
 import csv
 
 
-def read_portfolio_tuple(filename):
-    """A function that returns a list of tuples of the holdings in a portfolio"""
-    portfolio = []
-    with open(filename, "rt") as f:
-        data = csv.reader(f)
-        header = next(data)
-        for row in data:
-            portfolio.append((row[0], int(row[1]), float(row[2])))
-    return portfolio
-
-
-def read_portfolio(filename):
+def read_portfolio(filename: str) -> dict:
     """A function that returns a list of dictionaries of the holdings in a portfolio"""
     portfolio = []
     with open(filename, "rt") as f:
@@ -33,7 +22,7 @@ def read_portfolio(filename):
     return portfolio
 
 
-def read_prices(filename):
+def read_prices(filename: str) -> dict:
     """Returns a dictionary of stock prices (key=stock name, value=stock price)
     read from a file."""
     prices = {}
@@ -45,7 +34,7 @@ def read_prices(filename):
     return prices
 
 
-def make_report(portfolio, prices):
+def make_report(portfolio: dict, prices: dict) -> list[tuple]:
     """Returns a list of tuples where each tuple is a summary of the
     performance of the stock."""
     report = []
@@ -61,7 +50,7 @@ def make_report(portfolio, prices):
     return report
 
 
-def format_report(report):
+def print_report(report: list[tuple]):
     """Prints a formatted table of the stockes in report."""
     headers = ("Name", "Shares", "Price", "Change")
     print("%10s | %10s | %10s | %10s" % headers)
@@ -71,52 +60,7 @@ def format_report(report):
         print(f"{name:>10s} | {int(shares):>10d} | {price:>10s} | {change:>10.2f}")
 
 
-def compute_portfolio_cost(portfolio):
-    """Returns the cost of the entire portfolio."""
-    total = 0.0
-    for stock in portfolio:
-        total += stock["shares"] * stock["price"]
-    return total
-
-
-def compute_portfolio_value(portfolio, prices):
-    total = 0.0
-    for stock in portfolio:
-        name = stock["name"]
-        if name in prices:
-            total += stock["shares"] * prices[name]
-    return total
-
-
-def compute_portfolio_pnl(portfolio, prices):
-    cost = compute_portfolio_cost(portfolio)
-    current_value = compute_portfolio_value(portfolio, prices)
-    return current_value - cost
-
-
-def compute_holding_pnl(portfolio, prices):
-    """Returns a dictionary of the pnl for each holding in the portfolio."""
-    pnl = {}
-    for stock in portfolio:
-        name = stock["name"]
-        if name in prices:
-            cost = stock["shares"] * stock["price"]
-            curr_value = stock["shares"] * prices[name]
-            pl = round(curr_value - cost, 2)
-            if name in pnl:
-                pnl[name] += pl
-            else:
-                pnl[name] = pl
-        else:
-            pnl[name] = None
-    return pnl
-
-
 portfolio = read_portfolio("Data/portfoliodate.csv")
 prices = read_prices("Data/prices.csv")
 report = make_report(portfolio, prices)
-format_report(report)
-
-# print(f"Portfolio Cost: ${compute_portfolio_cost(portfolio):,.2f}")
-# print(f"Portfolio Value: ${compute_portfolio_value(portfolio, prices):,.2f}")
-# print(f"Portfolio PNL: ${compute_portfolio_pnl(portfolio, prices):,.2f}")
+print_report(report)
