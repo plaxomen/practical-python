@@ -5,7 +5,12 @@ import csv
 
 
 def parse_csv(
-    filename: str, select=None, types=None, has_headers=True, delimiter=","
+    filename: str,
+    select=None,
+    types=None,
+    has_headers=True,
+    delimiter=",",
+    silence_errors=False,
 ) -> dict:
     """A function that takes a csv filename as input and returns a
     list of dictionaries representing each row of data."""
@@ -50,6 +55,7 @@ def parse_csv(
                     record = tuple(row)
                 records.append(record)
             except ValueError as e:
-                print(f"Error processing row {rowno}: {row}")
-                print(f"\tError Message: {e}")
+                if not silence_errors:
+                    print(f"Error processing row {rowno}: {row}")
+                    print(f"\tError Message: {e}")
     return records
