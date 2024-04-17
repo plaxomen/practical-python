@@ -3,36 +3,6 @@
 # Exercise 2.4
 
 from fileparse import parse_csv
-import csv
-
-
-# def read_portfolio(filename: str) -> dict:
-#     """A function that returns a list of dictionaries of the holdings in a portfolio"""
-#     portfolio = []
-#     with open(filename, "rt") as f:
-#         rows = csv.reader(f)
-#         header = next(rows)
-#         for rownum, row in enumerate(rows, 2):
-#             try:
-#                 record = dict(zip(header, row))
-#                 portfolio.append(record)
-#             except ValueError as err:
-#                 print(
-#                     f"Error processing row {rownum}. Missing or bad data: {row} > Message: {err}"
-#                 )
-#     return portfolio
-
-
-# def read_prices(filename: str) -> dict:
-#     """Returns a dictionary of stock prices (key=stock name, value=stock price)
-#     read from a file."""
-#     prices = {}
-#     with open(filename, "rt") as f:
-#         rows = csv.reader(f)
-#         for row in rows:
-#             if row:
-#                 prices[row[0]] = float(row[1])
-#     return prices
 
 
 def make_report(portfolio: dict, prices: dict) -> list[tuple]:
