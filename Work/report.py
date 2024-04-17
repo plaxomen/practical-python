@@ -3,6 +3,7 @@
 # Exercise 2.4
 
 from fileparse import parse_csv
+import sys
 
 
 def read_portfolio(filename: str) -> dict:
@@ -60,4 +61,15 @@ def portfolio_report(portfolio_filename: str, prices_filename: str):
     print_report(report)
 
 
-# portfolio_report("Data/portfolio.csv", "Data/prices.csv")
+def main(args):
+    if len(args) != 3:
+        raise SystemExit(
+            f"Expected 3 arguments, but received {len(args)}.\nUsage: report.py portfolio.csv prices.csv"
+        )
+    portfolio_filename = args[1]
+    prices_filename = args[2]
+    portfolio_report(portfolio_filename, prices_filename)
+
+
+if __name__ == "__main__":
+    main(sys.argv)
