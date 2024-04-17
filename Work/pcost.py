@@ -3,15 +3,13 @@
 # Exercise 1.27
 #
 # Write a program to calculate the total cost of the holdings in portfolio.csv
-import fileparse
+import report
 import sys
 
 
-def portfolio_cost_v2(filename):
+def portfolio_cost(filename):
     """A function to calculate the total cost of a portfolio in a file."""
-    portfolio = fileparse.parse_csv(
-        filename=filename, select=["name", "shares", "price"], types=[str, int, float]
-    )
+    portfolio = report.read_portfolio(filename)
     cost = 0
     for position in portfolio:
         cost += position["shares"] * position["price"]
@@ -23,5 +21,5 @@ if len(sys.argv) == 2:
 else:
     filename = "Data/portfolio.csv"
 
-cost = portfolio_cost_v2(filename)
+cost = portfolio_cost(filename)
 print(f"Total cost of portfolio in '{filename}': ${cost:,.2f}")

@@ -5,6 +5,23 @@
 from fileparse import parse_csv
 
 
+def read_portfolio(filename: str) -> dict:
+    """A function that returns a list of dictionaries of the holdings in a portfolio"""
+    portfolio = parse_csv(
+        filename=filename,
+        select=["name", "shares", "price"],
+        types=[str, int, float],
+    )
+    return portfolio
+
+
+def read_prices(filename: str) -> dict:
+    """Returns a dictionary of stock prices (key=stock name, value=stock price)
+    read from a file."""
+    prices = parse_csv(filename=filename, has_headers=False, types=[str, float])
+    return dict(prices)
+
+
 def make_report(portfolio: dict, prices: dict) -> list[tuple]:
     """Returns a list of tuples where each tuple is a summary of the
     performance of the stock."""
@@ -37,19 +54,10 @@ def print_report(report: list[tuple]):
 
 def portfolio_report(portfolio_filename: str, prices_filename: str):
     """Outputs a report of the current portfolio, its prices, and the change in price."""
-    portfolio = parse_csv(
-        filename=portfolio_filename,
-        select=["name", "shares", "price"],
-        types=[str, int, float],
-    )
-
-    # When no headers supplied to parse_csv the function returns a list of tuples for the prices.
-    # Convert the list to a dictionary where the keys are the names of the stocks and the values their prices.
-    prices = dict(
-        parse_csv(filename=prices_filename, has_headers=False, types=[str, float])
-    )
+    portfolio = read_portfolio(portfolio_filename)
+    prices = read_prices(prices_filename)
     report = make_report(portfolio, prices)
     print_report(report)
 
 
-portfolio_report("Data/portfolio.csv", "Data/prices.csv")
+# portfolio_report("Data/portfolio.csv", "Data/prices.csv")
