@@ -9,18 +9,20 @@ import sys
 
 def read_portfolio(filename: str) -> dict:
     """A function that returns a list of dictionaries of the holdings in a portfolio"""
-    portfolio = parse_csv(
-        filename=filename,
-        select=["name", "shares", "price"],
-        types=[str, int, float],
-    )
+    with open(filename, "rt") as f:
+        portfolio = parse_csv(
+            iterable=f,
+            select=["name", "shares", "price"],
+            types=[str, int, float],
+        )
     return portfolio
 
 
 def read_prices(filename: str) -> dict:
     """Returns a dictionary of stock prices (key=stock name, value=stock price)
     read from a file."""
-    prices = parse_csv(filename=filename, has_headers=False, types=[str, float])
+    with open(filename, "rt") as f:
+        prices = parse_csv(iterable=f, has_headers=False, types=[str, float])
     return dict(prices)
 
 
