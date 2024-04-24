@@ -11,9 +11,7 @@ import sys
 def portfolio_cost(filename):
     """A function to calculate the total cost of a portfolio in a file."""
     portfolio = report.read_portfolio(filename)
-    cost = 0
-    for position in portfolio:
-        cost += position["shares"] * position["price"]
+    cost = sum([stock.cost() for stock in portfolio])
     return cost
 
 

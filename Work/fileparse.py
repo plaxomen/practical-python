@@ -11,7 +11,7 @@ def parse_csv(
     has_headers=True,
     delimiter=",",
     silence_errors=False,
-) -> dict:
+) -> list[dict]:
     """A function that takes an iterable (file object, list, etc..) as input and returns a
     list of dictionaries representing each row of data."""
     if select and not has_headers:

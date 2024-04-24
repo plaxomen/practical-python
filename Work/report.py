@@ -5,17 +5,19 @@
 
 from fileparse import parse_csv
 import sys
+import stock
 
 
-def read_portfolio(filename: str) -> dict:
-    """A function that returns a list of dictionaries of the holdings in a portfolio"""
+def read_portfolio(filename: str) -> list[stock.Stock]:
+    """A function that returns a list of stocks of the holdings in a portfolio"""
     with open(filename, "rt") as f:
         portfolio = parse_csv(
             iterable=f,
             select=["name", "shares", "price"],
             types=[str, int, float],
         )
-    return portfolio
+    stocks = [stock.Stock(s["name"], s["shares"], s["price"]) for s in portfolio]
+    return stocks
 
 
 def read_prices(filename: str) -> dict:
@@ -26,19 +28,18 @@ def read_prices(filename: str) -> dict:
     return dict(prices)
 
 
-def make_report(portfolio: dict, prices: dict) -> list[tuple]:
+def make_report(portfolio: list[stock.Stock], prices: dict) -> list[tuple]:
     """Returns a list of tuples where each tuple is a summary of the
     performance of the stock."""
     report = []
     for stock in portfolio:
-        name = stock["name"]
-        if name in prices:
-            price = prices[name]
-            price_delta = price - float(stock["price"])
+        if stock.name in prices:
+            price = prices[stock.name]
+            price_delta = price - float(stock.price)
         else:
             price = 0.0
             price_delta = 0.0
-        report.append((name, stock["shares"], price, price_delta))
+        report.append((stock.name, stock.shares, price, price_delta))
     return report
 
 
