@@ -55,3 +55,15 @@ class HTMLTableFormatter(TableFormatter):
             tr += f"<td>{td}</td>"
         tr += "</tr>"
         print(tr)
+
+
+def create_formatter(fmt="txt") -> TableFormatter:
+    fmt = fmt.lower()
+    if fmt == "txt":
+        return TextTableFormatter()
+    elif fmt == "csv":
+        return CSVTableFormatter()
+    elif fmt == "html":
+        return HTMLTableFormatter()
+    else:
+        raise NotImplementedError(f"No formatter exists for format: {fmt}")

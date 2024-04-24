@@ -52,7 +52,7 @@ def print_report(reportdata, formatter):
         formatter.row(rowdata)
 
 
-def portfolio_report(portfolio_filename: str, prices_filename: str):
+def portfolio_report(portfolio_filename, prices_filename, fmt="txt"):
     """Outputs a report of the current portfolio, its prices, and the change in price."""
 
     # Read data files.
@@ -63,7 +63,7 @@ def portfolio_report(portfolio_filename: str, prices_filename: str):
     reportdata = make_report(portfolio, prices)
 
     # Print out the report data.
-    formatter = tableformat.HTMLTableFormatter()
+    formatter = tableformat.create_formatter(fmt)
     print_report(reportdata, formatter)
 
 
