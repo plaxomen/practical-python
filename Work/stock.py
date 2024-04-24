@@ -8,3 +8,11 @@ class Stock:
         self.name = name
         self.shares = shares
         self.price = price
+
+    def cost(self):
+        """Returns the number of shares multiplied by the current price."""
+        return self.shares * self.price
+
+    def sell(self, shares_to_sell: int):
+        self.shares -= shares_to_sell
+        return self.shares
