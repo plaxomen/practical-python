@@ -68,13 +68,14 @@ def portfolio_report(portfolio_filename, prices_filename, fmt="txt"):
 
 
 def main(args):
-    if len(args) != 3:
+    if len(args) != 4:
         raise SystemExit(
-            f"Expected 3 arguments, but received {len(args)}.\nUsage: report.py portfolio.csv prices.csv"
+            f"Expected 4 arguments, but received {len(args)}.\nUsage: report.py portfolio.csv prices.csv html"
         )
     portfolio_filename = args[1]
     prices_filename = args[2]
-    portfolio_report(portfolio_filename, prices_filename)
+    format = args[3]
+    portfolio_report(portfolio_filename, prices_filename, format)
 
 
 if __name__ == "__main__":
