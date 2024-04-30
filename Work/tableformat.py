@@ -67,3 +67,10 @@ def create_formatter(fmt="txt") -> TableFormatter:
         return HTMLTableFormatter()
     else:
         raise NotImplementedError(f"No formatter exists for format: {fmt}")
+
+
+def print_table(data, attributes, formatter: TableFormatter):
+    formatter.headings(attributes)
+    for record in data:
+        rowdata = [str(getattr(record, attribute, None)) for attribute in attributes]
+        formatter.row(rowdata)
