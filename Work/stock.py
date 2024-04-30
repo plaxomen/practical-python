@@ -9,6 +9,9 @@ class Stock:
         self.shares = shares
         self.price = price
 
+    def __repr__(self) -> str:
+        return f"Stock({self.name:s}, {self.shares:d}, {self.price:.2f})"
+
     def cost(self):
         """Returns the number of shares multiplied by the current price."""
         return self.shares * self.price
