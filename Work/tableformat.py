@@ -57,6 +57,10 @@ class HTMLTableFormatter(TableFormatter):
         print(tr)
 
 
+class FormatError(Exception):
+    pass
+
+
 def create_formatter(fmt="txt") -> TableFormatter:
     fmt = fmt.lower()
     if fmt == "txt":
@@ -66,7 +70,7 @@ def create_formatter(fmt="txt") -> TableFormatter:
     elif fmt == "html":
         return HTMLTableFormatter()
     else:
-        raise NotImplementedError(f"No formatter exists for format: {fmt}")
+        raise FormatError(f"No formatter implemented for table format: {fmt}")
 
 
 def print_table(data, attributes, formatter: TableFormatter):
